@@ -88,11 +88,23 @@ function cellClickHandler (row, col) {
         playerNumber = -1;
         alert(winner + " - победил");
     }
+    if (playerNumber % 2 === 0) {
+        let i = find();
+        cellClickHandler(Math.trunc(i / dim), i % dim);
+    }
 
 
     /* Пользоваться методом для размещения символа в клетке так:
         renderSymbolInCell(ZERO, row, col);
      */
+}
+
+function find() {
+    for (let i = 0; i < dim * dim; i++) {
+        if (map[i] === ' ')
+            return i;
+    }
+    return -1;
 }
 
 function renderSymbolInCell (symbol, row, col, color = '#333') {
