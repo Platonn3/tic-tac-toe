@@ -5,7 +5,7 @@ let playerNumber = 1;
 const dim = 3;
 
 const container = document.getElementById('fieldWrapper');
-const map = Array(9).fill(' ');
+const map = Array(dim * dim).fill(' ');
 
 startGame();
 addResetListener();
@@ -29,17 +29,54 @@ function renderGrid (dimension) {
     }
 }
 
+function isWin(map) {
+    for (let i = 0; i < dim; i++) {
+        if (map[i * dim] === map[i * dim + 1] === map[i * dim + 2]) {
+            renderSymbolInCell(map[i * dim], i * dim, 0, color='#F00')
+            renderSymbolInCell(map[i * dim], i * dim, 1, color='#F00')
+            renderSymbolInCell(map[i * dim], i * dim, 2, color='#F00')
+            return map[i * dim];
+        }
+    }
+
+    if (map[0] === map[4] === map[8]) {
+        renderSymbolInCell(map[i * dim], 0, 0, color='#F00')
+        renderSymbolInCell(map[i * dim], 1, 1, color='#F00')
+        renderSymbolInCell(map[i * dim], 2, 2, color='#F00')
+        return map[0];
+    }
+
+    if (map[2] === map[4] === map[6]) {
+        renderSymbolInCell(map[i * dim], 2, 0, color='#F00')
+        renderSymbolInCell(map[i * dim], 1, 1, color='#F00')
+        renderSymbolInCell(map[i * dim], 0, 2, color='#F00')
+        return map[2];
+    }
+
+    for (let i = 0; i < 3; i++) {
+        if(map[i] === map[i + 3] === map[i + 6]) {
+            renderSymbolInCell(map[i * dim], 0, i, color='#F00')
+            renderSymbolInCell(map[i * dim], 1, i, color='#F00')
+            renderSymbolInCell(map[i * dim], 2, i, color='#F00')
+            return map[i];
+        }
+    }
+
+    return -1;
+}
+
 function cellClickHandler (row, col) {
     if (map[row * dim + col] !== ' ')
         return;
-    if (playerNumber === 1) {
+    if (playerNumber % 2 === 1) {
         renderSymbolInCell(CROSS, row, col);
         map[row * dim + col] = CROSS;
     } else {
         renderSymbolInCell(ZERO, row, col);
         map[row * dim + col] = ZERO;
     }
-    playerNumber = (playerNumber + 1) % 2;
+    isWin(map)
+    playerNumber++;
 
 
     /* Пользоваться методом для размещения символа в клетке так:
