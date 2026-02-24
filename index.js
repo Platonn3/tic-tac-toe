@@ -1,7 +1,6 @@
 const CROSS = 'X';
 const ZERO = 'O';
 const EMPTY = ' ';
-
 const container = document.getElementById('fieldWrapper');
 
 startGame();
@@ -26,9 +25,32 @@ function renderGrid (dimension) {
     }
 }
 
+function isWin(map) {
+    for (let i = 0; i < map.length - 2; i++) {
+        if (map[i] === map[i + 1] === map[i + 2]) {
+            return map[i];
+        }
+    }
+
+    if (map[0] === map[4] === map[8]) {
+        return map[0]
+    }
+
+    if (map[2] === map[4] === map[6]) {
+        return map[2]
+    }
+
+    for (let i = 0; i < 3; i++) {
+        if(map[i] === map[i + 3] === map[i + 6]) {
+            return map[i]
+        }
+    }
+
+    return -1;
+}
+
 function cellClickHandler (row, col) {
-    // Пиши код тут
-    console.log(`Clicked on cell: ${row}, ${col}`);
+
 
 
     /* Пользоваться методом для размещения символа в клетке так:
