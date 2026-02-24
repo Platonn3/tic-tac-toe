@@ -31,7 +31,7 @@ function renderGrid (dimension) {
 
 function isWin(map) {
     for (let i = 0; i < dim; i++) {
-        if (map[i * dim] === map[i * dim + 1] && map[i * dim + 1] === map[i * dim + 2]) {
+        if (map[i * dim] === map[i * dim + 1] && map[i * dim + 1] === map[i * dim + 2] && map[i * dim] !== EMPTY) {
             renderSymbolInCell(map[i * dim], i * dim, 0, color='#F00');
             renderSymbolInCell(map[i * dim], i * dim, 1, color='#F00');
             renderSymbolInCell(map[i * dim], i * dim, 2, color='#F00');
@@ -39,14 +39,14 @@ function isWin(map) {
         }
     }
 
-    if (map[0] === map[4] && map[4] === map[8]) {
+    if (map[0] === map[4] && map[4] === map[8] && map[8] !== EMPTY) {
         renderSymbolInCell(map[0], 0, 0, color='#F00');
         renderSymbolInCell(map[0], 1, 1, color='#F00');
         renderSymbolInCell(map[0], 2, 2, color='#F00');
         return map[0];
     }
 
-    if (map[2] === map[4] && map[4] === map[6]) {
+    if (map[2] === map[4] && map[4] === map[6] && map[6] !== EMPTY) {
         renderSymbolInCell(map[4], 2, 0, color='#F00');
         renderSymbolInCell(map[4], 1, 1, color='#F00');
         renderSymbolInCell(map[4], 0, 2, color='#F00');
@@ -54,7 +54,7 @@ function isWin(map) {
     }
 
     for (let i = 0; i < 3; i++) {
-        if(map[i] === map[i + 3] && map[i + 3] === map[i + 6]) {
+        if(map[i] === map[i + 3] && map[i + 3] === map[i + 6] && map[i] !== EMPTY) {
             renderSymbolInCell(map[i], 0, i, color='#F00');
             renderSymbolInCell(map[i], 1, i, color='#F00');
             renderSymbolInCell(map[i], 2, i, color='#F00');
@@ -71,20 +71,21 @@ function isDraw () {
 }
 
 function cellClickHandler (row, col) {
-    if (map[row * dim + col] !== ' ')
+    if (map[row * dim + col] !== ' ' || playerNumber === -1)
         return;
     if (playerNumber % 2 === 1) {
-        renderSymbolInCell(CROSS, row, col);
         map[row * dim + col] = CROSS;
+        renderSymbolInCell(CROSS, row, col);
     } else {
-        renderSymbolInCell(ZERO, row, col);
         map[row * dim + col] = ZERO;
+        renderSymbolInCell(ZERO, row, col);
     }
     playerNumber++;
     let winner = isWin(map);
     if (winner === -1)
         isDraw();
     else {
+        playerNumber = -1;
         alert(winner + " - победил");
     }
 
