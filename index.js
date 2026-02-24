@@ -1,14 +1,17 @@
 const CROSS = 'X';
 const ZERO = 'O';
 const EMPTY = ' ';
+let playerNumber = 1;
+const dim = 3;
 
 const container = document.getElementById('fieldWrapper');
+const map = Array(9).fill(' ');
 
 startGame();
 addResetListener();
 
 function startGame () {
-    renderGrid(3);
+    renderGrid(dim);
 }
 
 function renderGrid (dimension) {
@@ -27,8 +30,16 @@ function renderGrid (dimension) {
 }
 
 function cellClickHandler (row, col) {
-    // Пиши код тут
-    console.log(`Clicked on cell: ${row}, ${col}`);
+    if (map[row * dim + col] !== ' ')
+        return;
+    if (playerNumber === 1) {
+        renderSymbolInCell(CROSS, row, col);
+        map[row * dim + col] = CROSS;
+    } else {
+        renderSymbolInCell(ZERO, row, col);
+        map[row * dim + col] = ZERO;
+    }
+    playerNumber = (playerNumber + 1) % 2;
 
 
     /* Пользоваться методом для размещения символа в клетке так:
@@ -54,7 +65,11 @@ function addResetListener () {
 }
 
 function resetClickHandler () {
-    console.log('reset!');
+    playerNumber = 1;
+    map.fill(' ');
+    for (let i = 0; i < dim; i++)
+        for (let j = 0; j < dim; j++)
+            renderSymbolInCell(EMPTY, i, j);
 }
 
 
