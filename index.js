@@ -2,6 +2,7 @@ const CROSS = 'X';
 const ZERO = 'O';
 const EMPTY = ' ';
 const container = document.getElementById('fieldWrapper');
+let playerNumber = 1;
 
 startGame();
 addResetListener();
@@ -26,14 +27,14 @@ function renderGrid (dimension) {
 }
 
 function isWin(map) {
-    for (let i = 0; i < map.length - 2; i++) {
+    for (let i = 0; i < map.length - 2; i += 3) {
         if (map[i] === map[i + 1] === map[i + 2]) {
             return map[i];
         }
     }
 
     if (map[0] === map[4] === map[8]) {
-        return map[0]
+        return map[0];
     }
 
     if (map[2] === map[4] === map[6]) {
@@ -47,6 +48,11 @@ function isWin(map) {
     }
 
     return -1;
+}
+
+function isDraw (map) {
+    if (playerNumber === 10)
+        alert("Победила дружба");
 }
 
 function cellClickHandler (row, col) {
