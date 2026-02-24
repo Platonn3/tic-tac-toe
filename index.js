@@ -31,38 +31,43 @@ function renderGrid (dimension) {
 
 function isWin(map) {
     for (let i = 0; i < dim; i++) {
-        if (map[i * dim] === map[i * dim + 1] === map[i * dim + 2]) {
-            renderSymbolInCell(map[i * dim], i * dim, 0, color='#F00')
-            renderSymbolInCell(map[i * dim], i * dim, 1, color='#F00')
-            renderSymbolInCell(map[i * dim], i * dim, 2, color='#F00')
+        if (map[i * dim] === map[i * dim + 1] && map[i * dim + 1] === map[i * dim + 2]) {
+            renderSymbolInCell(map[i * dim], i * dim, 0, color='#F00');
+            renderSymbolInCell(map[i * dim], i * dim, 1, color='#F00');
+            renderSymbolInCell(map[i * dim], i * dim, 2, color='#F00');
             return map[i * dim];
         }
     }
 
-    if (map[0] === map[4] === map[8]) {
-        renderSymbolInCell(map[i * dim], 0, 0, color='#F00')
-        renderSymbolInCell(map[i * dim], 1, 1, color='#F00')
-        renderSymbolInCell(map[i * dim], 2, 2, color='#F00')
+    if (map[0] === map[4] && map[4] === map[8]) {
+        renderSymbolInCell(map[0], 0, 0, color='#F00');
+        renderSymbolInCell(map[0], 1, 1, color='#F00');
+        renderSymbolInCell(map[0], 2, 2, color='#F00');
         return map[0];
     }
 
-    if (map[2] === map[4] === map[6]) {
-        renderSymbolInCell(map[i * dim], 2, 0, color='#F00')
-        renderSymbolInCell(map[i * dim], 1, 1, color='#F00')
-        renderSymbolInCell(map[i * dim], 0, 2, color='#F00')
-        return map[2];
+    if (map[2] === map[4] && map[4] === map[6]) {
+        renderSymbolInCell(map[4], 2, 0, color='#F00');
+        renderSymbolInCell(map[4], 1, 1, color='#F00');
+        renderSymbolInCell(map[4], 0, 2, color='#F00');
+        return map[4];
     }
 
     for (let i = 0; i < 3; i++) {
-        if(map[i] === map[i + 3] === map[i + 6]) {
-            renderSymbolInCell(map[i * dim], 0, i, color='#F00')
-            renderSymbolInCell(map[i * dim], 1, i, color='#F00')
-            renderSymbolInCell(map[i * dim], 2, i, color='#F00')
+        if(map[i] === map[i + 3] && map[i + 3] === map[i + 6]) {
+            renderSymbolInCell(map[i], 0, i, color='#F00');
+            renderSymbolInCell(map[i], 1, i, color='#F00');
+            renderSymbolInCell(map[i], 2, i, color='#F00');
             return map[i];
         }
     }
 
     return -1;
+}
+
+function isDraw () {
+    if (playerNumber === 10)
+        alert("Победила дружба");
 }
 
 function cellClickHandler (row, col) {
@@ -75,8 +80,13 @@ function cellClickHandler (row, col) {
         renderSymbolInCell(ZERO, row, col);
         map[row * dim + col] = ZERO;
     }
-    isWin(map)
     playerNumber++;
+    let winner = isWin(map);
+    if (winner === -1)
+        isDraw();
+    else {
+        alert(winner + " - победил");
+    }
 
 
     /* Пользоваться методом для размещения символа в клетке так:
